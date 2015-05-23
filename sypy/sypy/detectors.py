@@ -759,12 +759,41 @@ class TrustRankDetector(BaseSybilDetector):
         ) * self.num_iterations_scaler
         num_iterations = (int)(math.ceil(num_iterations))
 
+        #print self.total_trust
+
+        #change here
+        original_edges = self.network.graph.edges()
+        self.G = nx.Graph()
+        self.G.add_edges_from(original_edges)
+        trust_len = len(self.verifiers)
+        #Change verifies
+        # Here assume it is unidrect
+        l = []
+        for n in self.G:
+            numfollower = self.G.degree(n)
+            l.append([n, numfollower])
+
+        l = sorted(l, key=lambda s: s[1], reverse=True)
+        #print l
+        #Set the top 100 nodes as trust
+        t = []
+        for i in range(trust_len):
+            t.append(l[i][0])
+
+        self.verifiers = t
+        #print self.verifiers
         network_trust = self.__initialize_network_trust()
 
+        #change here
+        network_trust = nx.pagerank(self.G,personalization=network_trust)
+        '''
         while num_iterations != 0:
             network_trust = self.__propagate_network_trust(network_trust)
             num_iterations = num_iterations - 1
+        '''
 
+        
+            
         ranked_trust = self.__normalize_and_rank_network_trust(network_trust)
 
         pivot_mark = (int)(self.pivot * len(ranked_trust))

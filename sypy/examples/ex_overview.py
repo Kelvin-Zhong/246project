@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     
     # edges_benchmark = sypy.AttackEdgesDetectorsBenchmark(
-    #     multi_benchmark=multi_benchmark
+    #    multi_benchmark=multi_benchmark
     # )
     # edges_benchmark.run()
     # edges_benchmark.plot_curve(file_name="attack_edge_vs_auc")
