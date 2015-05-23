@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     sybil_region = sypy.Region(
         graph = sypy.PowerLawGraph(
-            num_nodes=1000,
+            num_nodes=50,
             node_degree=4,
             prob_triad=0.75
         ),
@@ -59,10 +59,11 @@ if __name__ == "__main__":
     multi_benchmark = sypy.MultipleDetectorsBenchmark(
         detectors = [
             sypy.SybilRankDetector,
-            sypy.SybilPredictDetector
+            sypy.SybilPredictDetector,
+            sypy.TrustRankDetector
         ],
         network=social_network,
-        thresholds=["pivot", "pivot"]
+        thresholds=["pivot", "pivot", "pivot"]
     )
     multi_benchmark.run()
     multi_benchmark.plot_curve(file_name="roc_curve")
