@@ -56,10 +56,10 @@ class Network:
         if self.left_region.is_sybil:
             raise Exception("Left region must be honest")
 
-        if nx.number_connected_components(
-            self.left_region.graph.structure
-        ) != 1:
-            raise Exception("Left region has more than one component")
+        #if nx.number_connected_components(
+        #    self.left_region.graph.structure
+        #) != 1:
+        #    raise Exception("Left region has more than one component")
 
         if nx.number_connected_components(
             self.right_region.graph.structure

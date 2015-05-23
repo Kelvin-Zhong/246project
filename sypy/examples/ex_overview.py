@@ -35,19 +35,22 @@ if __name__ == "__main__":
         is_sybil=True
     )
     sybil_stats = sybil_region.get_region_stats()
-    assert sybil_stats.is_connected == True
-
+    #assert sybil_stats.is_connected == True
+    graph_dataset = sypy.ImportedGEXFGraph("datasets/ca-HepTh.gexf")
     honest_region = sypy.Region(
-        graph=sypy.PowerLawGraph(
-            num_nodes=1000,
-            node_degree=4,
-            prob_triad=0.75
-        ),
+        
+        # graph=sypy.PowerLawGraph(
+        #    num_nodes=1000,
+        #    node_degree=4,
+        #    prob_triad=0.75
+        # ),
+        
+        graph= graph_dataset,
         name="HonestPowerLawGraph"
     )
     honest_region.pick_random_honest_nodes(num_nodes=10)
     honest_stats = honest_region.get_region_stats()
-    assert honest_stats.is_connected == True
+    #assert honest_stats.is_connected == True
 
     social_network = sypy.Network(
         left_region=honest_region,
@@ -64,6 +67,7 @@ if __name__ == "__main__":
         ],
         network=social_network,
         thresholds=["pivot", "pivot", "pivot"]
+        #thresholds=["pivot"]
     )
     multi_benchmark.run()
     multi_benchmark.plot_curve(file_name="roc_curve")

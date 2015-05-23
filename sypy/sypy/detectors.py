@@ -280,7 +280,7 @@ class SybilRankDetector(BaseSybilDetector):
         num_iterations = (int)(math.ceil(num_iterations))
 
         network_trust = self.__initialize_network_trust()
-
+        print self.network.graph.order()
         while num_iterations != 0:
             network_trust = self.__propagate_network_trust(network_trust)
             num_iterations = num_iterations - 1
@@ -402,7 +402,8 @@ class SybilPredictDetector(BaseSybilDetector):
         num_iterations = (int)(math.ceil(num_iterations))
 
         network_trust = self.__initialize_network_trust()
-
+        print self.network.graph.order()
+        #print self.num_iterations_scaler
         while num_iterations != 0:
             network_trust = self.__propagate_network_trust(network_trust)
             num_iterations = num_iterations - 1
@@ -429,6 +430,7 @@ class SybilPredictDetector(BaseSybilDetector):
         return network_trust
 
     def __propagate_network_trust(self, network_trust):
+
         updated_trust = {}
         for node, trust in network_trust.iteritems():
             new_trust = 0.0
@@ -768,6 +770,7 @@ class TrustRankDetector(BaseSybilDetector):
         trust_len = len(self.verifiers)
         #Change verifies
         # Here assume it is unidrect
+    
         l = []
         for n in self.G:
             numfollower = self.G.degree(n)
@@ -781,6 +784,7 @@ class TrustRankDetector(BaseSybilDetector):
             t.append(l[i][0])
 
         self.verifiers = t
+        
         #print self.verifiers
         network_trust = self.__initialize_network_trust()
 
