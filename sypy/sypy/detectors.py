@@ -80,6 +80,7 @@ class GirvanNewmanCommunityDetector(BaseDetector):
         self.max_level = max_level
 
     def detect(self):
+        print "GirvanNewmanCommunityDetector"
         structure = self.network.graph.structure.copy()
 
         self.dendogram.add_node(structure)
@@ -166,6 +167,7 @@ class MisloveSingleCommunityDetector(BaseDetector):
         )
 
     def detect(self):
+        print "MisloveSingleCommunityDetector"
         self.__grow_community()
         community = self.honests_graph.nodes()
 
@@ -274,13 +276,15 @@ class SybilRankDetector(BaseSybilDetector):
         self.total_trust = total_trust
 
     def detect(self):
+        print "SybilRankDetector"
         num_iterations = math.log10(
             self.network.graph.order()
         ) * self.num_iterations_scaler
         num_iterations = (int)(math.ceil(num_iterations))
 
         network_trust = self.__initialize_network_trust()
-        print self.network.graph.order()
+        #print self.network.graph.order()
+        #print len(self.network.graph.edges())
         while num_iterations != 0:
             network_trust = self.__propagate_network_trust(network_trust)
             num_iterations = num_iterations - 1
@@ -394,6 +398,8 @@ class SybilPredictDetector(BaseSybilDetector):
                 self.network.graph.structure[node][neighbor] = {}
 
     def detect(self):
+        print "SybilPredictDetector"
+
         self.__setup_network()
 
         num_iterations = math.log10(
@@ -402,7 +408,7 @@ class SybilPredictDetector(BaseSybilDetector):
         num_iterations = (int)(math.ceil(num_iterations))
 
         network_trust = self.__initialize_network_trust()
-        print self.network.graph.order()
+        #print self.network.graph.order()
         #print self.num_iterations_scaler
         while num_iterations != 0:
             network_trust = self.__propagate_network_trust(network_trust)
@@ -482,6 +488,7 @@ class SybilGuardDetector(BaseSybilDetector):
         self.route_len_scaler = route_len_scaler
 
     def detect(self):
+        print "SybilGuardDetector"
         self.__generate_random_routes()
 
         num_honests = len(self.honests_truth)
@@ -583,6 +590,7 @@ class SybilLimitDetector(BaseSybilDetector):
         self.tail_balance_scalar = tail_balance_scalar
 
     def detect(self):
+        print "SybilLimitDetector"
         num_edges = self.network.left_region.graph.size()
         num_instances = int(
             self.num_instances_scaler * math.sqrt(num_edges)
@@ -739,15 +747,7 @@ class SybilLimitDetector(BaseSybilDetector):
         return (accepted, tail_counters)
 
 class TrustRankDetector(BaseSybilDetector):
-    """
-    Implements a centralized version of the SybilRank protocol as described
-    in Aiding the Detection of Fake Accounts in Large Scale Social Online
-    Services, Cao et al., Usenix NSDI, 2012.
-    This implementation assumes a single-community honest region. The case
-    of multi-community structure can be reduced to a single-community structure
-    by applying Louvain community detection algorithm and running SybilRank
-    on every community, as described in the paper.
-    """
+
     def __init__(self, network, total_trust=1.0, verifiers=None, pivot=0.1,
             seed=None, num_iterations_scaler=1.0):
         BaseSybilDetector.__init__(self, network, verifiers, seed)
@@ -756,6 +756,7 @@ class TrustRankDetector(BaseSybilDetector):
         self.total_trust = total_trust
 
     def detect(self):
+        print "TrustRankDetector"
         num_iterations = math.log10(
             self.network.graph.order()
         ) * self.num_iterations_scaler

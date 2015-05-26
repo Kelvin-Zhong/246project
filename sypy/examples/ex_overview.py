@@ -39,13 +39,13 @@ if __name__ == "__main__":
     graph_dataset = sypy.ImportedGEXFGraph("datasets/ca-HepTh.gexf")
     honest_region = sypy.Region(
         
-        # graph=sypy.PowerLawGraph(
-        #    num_nodes=1000,
-        #    node_degree=4,
-        #    prob_triad=0.75
-        # ),
+        graph=sypy.PowerLawGraph(
+           num_nodes=1000,
+           node_degree=4,
+           prob_triad=0.75
+        ),
         
-        graph= graph_dataset,
+        #graph= graph_dataset,
         name="HonestPowerLawGraph"
     )
     honest_region.pick_random_honest_nodes(num_nodes=10)
@@ -62,12 +62,17 @@ if __name__ == "__main__":
     multi_benchmark = sypy.MultipleDetectorsBenchmark(
         detectors = [
             sypy.SybilRankDetector,
-            sypy.SybilPredictDetector,
-            sypy.TrustRankDetector
+            sypy.SybilPredictDetector, #too slow
+            sypy.TrustRankDetector,
+            sypy.GirvanNewmanCommunityDetector, #too slow
+            sypy.MisloveSingleCommunityDetector,
+            sypy.SybilGuardDetector,
+            sypy.SybilLimitDetector, #too slow
+            
         ],
         network=social_network,
-        thresholds=["pivot", "pivot", "pivot"]
-        #thresholds=["pivot"]
+        #thresholds=["pivot", "pivot", "pivot"]
+        thresholds=["pivot","pivot","pivot","pivot","pivot","pivot","pivot"]
     )
     multi_benchmark.run()
     multi_benchmark.plot_curve(file_name="roc_curve")

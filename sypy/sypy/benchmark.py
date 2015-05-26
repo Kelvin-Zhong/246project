@@ -304,7 +304,9 @@ class AttackEdgesDetectorsBenchmark:
             left = len(self.multi_benchmark.network.left_region.graph.nodes())
             right = len(self.multi_benchmark.network.right_region.graph.nodes())
             max_edges = 2 * (left + right)
-            self.values = [1] + [ i*100 for i in range(1, (max_edges/100)+1) ]
+            self.values = [1] + [ i*1000 for i in range(1, (max_edges/1000)+1) ]
+
+
 
         self.curves = {}
         for detector in self.multi_benchmark.detectors:
@@ -315,6 +317,7 @@ class AttackEdgesDetectorsBenchmark:
             }
 
     def run(self):
+
         for value in sorted(self.values):
             self.multi_benchmark.network.reset(num_edges=value)
             self.multi_benchmark.run()
