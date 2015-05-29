@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     sybil_region = sypy.Region(
         graph = sypy.PowerLawGraph(
-            num_nodes=3000,
+            num_nodes=300,
             node_degree=5,
             prob_triad=0.75
         ),
@@ -39,13 +39,13 @@ if __name__ == "__main__":
     graph_dataset = sypy.ImportedGEXFGraph("datasets/ca-AstroPh.gexf")
     honest_region = sypy.Region(
         
-        # graph=sypy.PowerLawGraph(
-        #    num_nodes=10000,
-        #    node_degree=6,
-        #    prob_triad=0.75
-        # ),
+        graph=sypy.PowerLawGraph(
+           num_nodes=1000,
+           node_degree=5,
+           prob_triad=0.75
+        ),
         
-        graph= graph_dataset,
+        # graph= graph_dataset,
         name="HonestPowerLawGraph"
     )
     honest_region.pick_random_honest_nodes(num_nodes=10)
@@ -74,15 +74,15 @@ if __name__ == "__main__":
         #thresholds=[ "pivot","pivot"]
         thresholds=["pivot","pivot"]
     )
-    # multi_benchmark.run()
-    # multi_benchmark.plot_curve(file_name="roc_curve")
+    multi_benchmark.run()
+    multi_benchmark.plot_curve(file_name="roc_curve")
 
     
-    edges_benchmark = sypy.AttackEdgesDetectorsBenchmark(
-       multi_benchmark=multi_benchmark
-    )
-    edges_benchmark.run()
-    edges_benchmark.plot_curve(file_name="attack_edge_vs_auc")
+    # edges_benchmark = sypy.AttackEdgesDetectorsBenchmark(
+    #    multi_benchmark=multi_benchmark
+    # )
+    # edges_benchmark.run()
+    # edges_benchmark.plot_curve(file_name="attack_edge_vs_auc")
 
     #answer = raw_input("Visualize [y/n]: ")
     #if answer == "y":

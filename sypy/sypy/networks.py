@@ -109,7 +109,7 @@ class Network:
         self.known_honests = self.left_region.known_honests
         self.is_stitched = True
 
-    def visualize(self, file_name=None, file_format="pdf"):
+    def visualize(self, file_name=None, file_format="png"):
         layout = nx.spring_layout(self.graph.structure)
 
         handles = []
@@ -119,7 +119,7 @@ class Network:
             node_size=150,
             node_color="green"
         )
-        honest_handle.set_label("Honest")
+        honest_handle.set_label("True")
         handles.append(honest_handle)
 
         sybil_nodes = range(
@@ -134,7 +134,7 @@ class Network:
             node_size=150,
             node_color="red"
         )
-        sybil_handle.set_label("Sybil")
+        sybil_handle.set_label("Fake")
         handles.append(sybil_handle)
 
         known_handle = nx.draw_networkx_nodes(
@@ -144,7 +144,7 @@ class Network:
             node_color="orange",
             node_size=150
         )
-        known_handle.set_label("Known")
+        known_handle.set_label("Trust Seed")
         handles.append(known_handle)
 
         nx.draw_networkx_edges(
@@ -180,3 +180,7 @@ class Network:
             plt.clf()
         else:
             plt.show()
+            plt.savefig(
+                "{0}.{1}".format("social_graph_data", file_format),
+                format=file_format
+            )
