@@ -276,7 +276,7 @@ class SybilRankDetector(BaseSybilDetector):
         self.total_trust = total_trust
 
     def detect(self):
-        print "SybilRankDetector"
+        print "SybilRankDetector","edge num:",len(self.network.graph.edges())
         num_iterations = math.log10(
             self.network.graph.order()
         ) * self.num_iterations_scaler
@@ -771,9 +771,13 @@ class TrustRankDetector(BaseSybilDetector):
         trust_len = len(self.verifiers)
         #Change verifies
         # Here assume it is unidrect
-    
+
+        ver = set(self.verifiers)
+
         l = []
         for n in self.G:
+            if n not in ver:
+                continue
             numfollower = self.G.degree(n)
             l.append([n, numfollower])
 

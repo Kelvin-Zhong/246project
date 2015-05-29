@@ -304,8 +304,15 @@ class AttackEdgesDetectorsBenchmark:
             left = len(self.multi_benchmark.network.left_region.graph.nodes())
             right = len(self.multi_benchmark.network.right_region.graph.nodes())
             max_edges = 2 * (left + right)
-            self.values = [1] + [ i*1000 for i in range(1, (max_edges/1000)+1) ]
-
+            #print max_edges
+            #self.values = [1] + [ i*100 for i in range(1, (max_edges/1600)+1) ]
+            step = max_edges / 300
+            self.values = [1] + [step * i for i in range(1,11)]
+            print "Attack counts:",len(self.values),"max edge count:",max_edges
+            print self.values
+            #self.values = [ i*100 for i in range(1, (max_edges/1000)+1) ]
+            #step = max_edges / 500
+            #self.values = [1] + [step * i * 2 for i in range(1,11)]
 
 
         self.curves = {}

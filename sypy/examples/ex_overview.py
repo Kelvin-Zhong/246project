@@ -27,8 +27,8 @@ if __name__ == "__main__":
 
     sybil_region = sypy.Region(
         graph = sypy.PowerLawGraph(
-            num_nodes=50,
-            node_degree=4,
+            num_nodes=3000,
+            node_degree=5,
             prob_triad=0.75
         ),
         name = "SybilCompleteGraph",
@@ -36,16 +36,16 @@ if __name__ == "__main__":
     )
     sybil_stats = sybil_region.get_region_stats()
     #assert sybil_stats.is_connected == True
-    graph_dataset = sypy.ImportedGEXFGraph("datasets/ca-HepTh.gexf")
+    graph_dataset = sypy.ImportedGEXFGraph("datasets/ca-AstroPh.gexf")
     honest_region = sypy.Region(
         
-        graph=sypy.PowerLawGraph(
-           num_nodes=1000,
-           node_degree=4,
-           prob_triad=0.75
-        ),
+        # graph=sypy.PowerLawGraph(
+        #    num_nodes=10000,
+        #    node_degree=6,
+        #    prob_triad=0.75
+        # ),
         
-        #graph= graph_dataset,
+        graph= graph_dataset,
         name="HonestPowerLawGraph"
     )
     honest_region.pick_random_honest_nodes(num_nodes=10)
@@ -62,29 +62,29 @@ if __name__ == "__main__":
     multi_benchmark = sypy.MultipleDetectorsBenchmark(
         detectors = [
             sypy.SybilRankDetector,
-            sypy.SybilPredictDetector, #too slow
             sypy.TrustRankDetector,
-            sypy.GirvanNewmanCommunityDetector, #too slow
-            sypy.MisloveSingleCommunityDetector,
-            sypy.SybilGuardDetector,
-            sypy.SybilLimitDetector, #too slow
+            #sypy.SybilPredictDetector, #too slow
+            #sypy.GirvanNewmanCommunityDetector, #too slow
+            #sypy.MisloveSingleCommunityDetector,
+            #sypy.SybilGuardDetector,
+            #sypy.SybilLimitDetector, #too slow
             
         ],
         network=social_network,
-        #thresholds=["pivot", "pivot", "pivot"]
-        thresholds=["pivot","pivot","pivot","pivot","pivot","pivot","pivot"]
+        #thresholds=[ "pivot","pivot"]
+        thresholds=["pivot","pivot"]
     )
-    multi_benchmark.run()
-    multi_benchmark.plot_curve(file_name="roc_curve")
+    # multi_benchmark.run()
+    # multi_benchmark.plot_curve(file_name="roc_curve")
 
     
-    # edges_benchmark = sypy.AttackEdgesDetectorsBenchmark(
-    #    multi_benchmark=multi_benchmark
-    # )
-    # edges_benchmark.run()
-    # edges_benchmark.plot_curve(file_name="attack_edge_vs_auc")
+    edges_benchmark = sypy.AttackEdgesDetectorsBenchmark(
+       multi_benchmark=multi_benchmark
+    )
+    edges_benchmark.run()
+    edges_benchmark.plot_curve(file_name="attack_edge_vs_auc")
 
-    answer = raw_input("Visualize [y/n]: ")
-    if answer == "y":
-        print "This will take some time..."
-        social_network.visualize()
+    #answer = raw_input("Visualize [y/n]: ")
+    #if answer == "y":
+    #    print "This will take some time..."
+    social_network.visualize()
